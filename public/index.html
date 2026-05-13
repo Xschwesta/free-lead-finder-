@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Müşteri Bulucu Ajan | Tamamen Ücretsiz Lead Üretimi</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    
+    <div class="background-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="container">
+        <header class="glass-panel">
+            <h1><i class="fa-solid fa-robot"></i> Müşteri Bulucu Ajan</h1>
+            <p>API veya kredi limiti olmadan sektörünüzden e-posta toplayın.</p>
+            
+            <form id="searchForm">
+                <div class="input-group">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <input type="text" id="sectorInput" placeholder="Şirketiniz veya Hizmetiniz (Örn: Dijital Pazarlama Ajansı)" required autocomplete="off">
+                    <button type="submit" id="searchBtn">
+                        <i class="fa-solid fa-magnifying-glass"></i> Müşteri Bul
+                    </button>
+                </div>
+            </form>
+
+            <div id="aiTagsContainer" class="hidden" style="margin-top: 1.5rem; text-align: left; background: rgba(15, 23, 42, 0.4); padding: 1rem; border-radius: 12px; border: 1px solid var(--panel-border);">
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem; text-align: left;"><i class="fa-solid fa-robot"></i> AI Tarafından Belirlenen Hedef Kitleler:</p>
+                <div id="tagsList" style="display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
+            </div>
+        </header>
+
+        <main>
+            <div id="statusPanel" class="status-panel glass-panel hidden">
+                <div class="loader"></div>
+                <p id="statusText">Ajan başlatılıyor...</p>
+                <div class="stats">
+                    <span class="badge"><i class="fa-solid fa-envelope"></i> Bulunan: <strong id="leadCount">0</strong></span>
+                </div>
+            </div>
+
+            <div class="results-container">
+                <div class="table-wrapper glass-panel hidden" id="resultsWrapper">
+                    <div class="table-header">
+                        <h2>Bulunan Potansiyel Müşteriler</h2>
+                        <button id="exportBtn" class="btn-secondary"><i class="fa-solid fa-download"></i> CSV İndir</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>E-Posta Adresi</th>
+                                <th>Kaynak / Başlık</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody">
+                            <!-- Satırlar buraya gelecek -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
