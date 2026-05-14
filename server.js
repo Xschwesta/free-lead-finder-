@@ -14,8 +14,16 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
+// Aynı sektör için API'yi tekrar çağırmamak için önbellek
+const tagsCache = new Map();
+
 // AI: hizmet tipini (b2b/b2p) ve hedef tag listesini belirler
 async function generateTargetTags(companyDesc, location) {
+    const cacheKey = `${companyDesc.trim().toLowerCase()}|${location}`;
+    if (tagsCache.has(cacheKey)) {
+        console.log(`[Cache] Tag'ler önbellekten alındı: "${companyDesc}"`);
+        return tagsCache.get(cacheKey);
+    }
     try {
         const isturkey = location === 'turkey';
         const prompt = `Şirketim/hizmetim: "${companyDesc}"
@@ -48,10 +56,14 @@ TAGS: tag1, tag2, tag3, ...`;
 
         const tagsMatch = text.match(/TAGS:\s*(.+)/s);
         const tags = tagsMatch
-            ? tagsMatch[1].split(',').map(t => t.trim().replace(/\n.*/s, '')).filter(t => t.length > 1 && t.length < 60)
+            ? tagsMatch[1].split(',')
+                .map(t => t.trim().replace(/\n.*/s, '').replace(/[.!?,;:]+$/, ''))
+                .filter(t => t.length > 1 && t.length < 60)
             : [];
 
-        return { searchType, tags };
+        const result = { searchType, tags };
+        tagsCache.set(cacheKey, result);
+        return result;
 
     } catch (error) {
         console.error("AI Tag Error:", error.message);
