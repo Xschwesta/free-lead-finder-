@@ -118,7 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Email türüne göre rozet
         let badge = '';
         let emailIcon = '<i class="fa-regular fa-envelope" style="color: var(--primary); margin-right: 8px;"></i>';
-        if (lead.title && lead.title.includes('[MX✅]')) {
+        if (lead.title && lead.title.includes('[Ekip👤]')) {
+            badge = '<span style="font-size:0.7rem; background:rgba(251,191,36,0.2); color:#fbbf24; border:1px solid rgba(251,191,36,0.4); border-radius:4px; padding:1px 5px; margin-left:6px;">👤 Çalışan</span>';
+            emailIcon = '<i class="fa-solid fa-user-tie" style="color: #fbbf24; margin-right: 8px;"></i>';
+        } else if (lead.title && lead.title.includes('[MX✅]')) {
             badge = '<span style="font-size:0.7rem; background:rgba(16,185,129,0.2); color:#10b981; border:1px solid rgba(16,185,129,0.4); border-radius:4px; padding:1px 5px; margin-left:6px;">MX Doğrulandı</span>';
             emailIcon = '<i class="fa-solid fa-check-circle" style="color: #10b981; margin-right: 8px;"></i>';
         } else if (lead.title && lead.title.includes('[TR🇹🇷 Web]')) {
@@ -137,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sourceCell.className = 'source-cell';
         let hostname = 'Arama';
         try { hostname = new URL(lead.source).hostname; } catch {}
-        const displayTitle = lead.title.replace(/\[MX✅\]|\[TR🇹🇷 Web\]|\[Web\]/g, '').trim();
+        const displayTitle = lead.title.replace(/\[MX✅\]|\[Ekip👤\]|\[TR🇹🇷 Web\]|\[Web\]/g, '').trim();
         sourceCell.innerHTML = `<strong>${displayTitle.substring(0, 55)}${displayTitle.length > 55 ? '…' : ''}</strong><br><a href="${lead.source}" target="_blank" rel="noopener"><i class="fa-solid fa-link"></i> ${hostname}</a>`;
 
         const actionCell = document.createElement('td');
