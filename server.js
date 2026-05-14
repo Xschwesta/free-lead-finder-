@@ -20,15 +20,22 @@ app.use(express.json());
 // Şirket tanımından hedeflenecek potansiyel müşteri unvanlarını/tag'lerini AI ile oluşturur
 async function generateTargetTags(companyDesc, location) {
     try {
-        const prompt = `Benim şirketim/hizmetim şu: "${companyDesc}"
-Lütfen bu hizmeti kime satabileceğimi düşün ve benim için en uygun potansiyel müşteri kitlelerini/unvanlarını belirle. Sadece aramaya uygun, net unvanlar üret. Doldurabildiğin kadar çok doldur, en az 20 farklı müşteri unvanı veya sektör ismi üret. Aralarına virgül koy. Başka hiçbir açıklama yazma.
-Hedef Lokasyon: ${location === 'turkey' ? 'Türkiye' : 'Global'}`;
+        const prompt = `Şirketim/hizmetim: "${companyDesc}"
+Hedef lokasyon: ${location === 'turkey' ? 'Türkiye (Türkçe unvanlar)' : 'Global (İngilizce unvanlar)'}
+
+Bu ürünü/hizmeti kime satabileceğimi düşün. Aşağıdaki kategorilerin hepsinden örnekler ekle:
+1. Karar verici unvanlar (CEO, Kurucu, Genel Müdür, Direktör, Yönetici Ortak)
+2. Departman müdürleri (Pazarlama Müdürü, Satış Direktörü, Satın Alma Müdürü)
+3. Hedef sektörler ve şirket türleri (Diş Kliniği, E-ticaret Şirketi, İnşaat Firması)
+4. Özel profiller (Girişimci, Serbest Meslek, Franchise Sahibi, Bayi)
+
+En az 35 farklı, arama motorunda bulunabilir net hedef kitle veya unvan üret. Sadece aralarına virgül koy, kesinlikle başka hiçbir açıklama yazma.`;
 
         const response = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [{ role: "user", content: prompt }],
             temperature: 0.8,
-            max_tokens: 300,
+            max_tokens: 600,
         });
 
         const text = response.choices[0].message.content;
