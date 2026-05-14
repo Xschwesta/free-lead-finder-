@@ -21,21 +21,22 @@ app.use(express.json());
 async function generateTargetTags(companyDesc, location) {
     try {
         const prompt = `Şirketim/hizmetim: "${companyDesc}"
-Hedef lokasyon: ${location === 'turkey' ? 'Türkiye (Türkçe unvanlar)' : 'Global (İngilizce unvanlar)'}
+Hedef lokasyon: ${location === 'turkey' ? 'Türkiye (Türkçe unvanlar ve sektörler)' : 'Global (İngilizce)'}
 
-Bu ürünü/hizmeti kime satabileceğimi düşün. Aşağıdaki kategorilerin hepsinden örnekler ekle:
-1. Karar verici unvanlar (CEO, Kurucu, Genel Müdür, Direktör, Yönetici Ortak)
-2. Departman müdürleri (Pazarlama Müdürü, Satış Direktörü, Satın Alma Müdürü)
-3. Hedef sektörler ve şirket türleri (Diş Kliniği, E-ticaret Şirketi, İnşaat Firması)
-4. Özel profiller (Girişimci, Serbest Meslek, Franchise Sahibi, Bayi)
+Bu hizmeti satın alabilecek HER türlü potansiyel müşteriyi düşün. Şu 5 kategorinin hepsinden mutlaka örnekler ekle:
+1. Üst düzey unvanlar: CEO, Kurucu, Genel Müdür, Ortak, Yönetim Kurulu Üyesi, COO, CMO
+2. Orta düzey yöneticiler: Pazarlama Müdürü, Satış Müdürü, Operasyon Müdürü, İK Müdürü, Satın Alma Müdürü
+3. Sektör ve şirket türleri: Diş Kliniği, Eğitim Kurumu, İnşaat Firması, Lojistik Şirketi, Restoran Zinciri
+4. Özel iş profilleri: Serbest Danışman, E-ticaret Girişimcisi, Franchise Sahibi, Ajans Kurucusu, Kobi Sahibi
+5. Niş hedefler: bu hizmete özellikle ihtiyaç duyabilecek spesifik meslek grupları
 
-En az 35 farklı, arama motorunda bulunabilir net hedef kitle veya unvan üret. Sadece aralarına virgül koy, kesinlikle başka hiçbir açıklama yazma.`;
+En az 40 farklı hedef kitle veya unvan üret. Sadece aralarına virgül koy, kesinlikle başka hiçbir şey yazma.`;
 
         const response = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [{ role: "user", content: prompt }],
             temperature: 0.8,
-            max_tokens: 600,
+            max_tokens: 800,
         });
 
         const text = response.choices[0].message.content;
