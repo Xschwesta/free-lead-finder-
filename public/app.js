@@ -78,9 +78,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     statusText.textContent = data.message;
                 } 
                 else if (data.type === 'tags') {
-                    // Yapay zeka tagleri gönderdi
                     aiTagsContainer.classList.remove('hidden');
-                    tagsList.innerHTML = data.data.map(t => `<span class="badge" style="margin-right: 5px; background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-color: rgba(59, 130, 246, 0.3);">${t}</span>`).join('');
+                    const typeColor = data.searchType === 'b2p'
+                        ? 'rgba(168,85,247,0.2); color:#c084fc; border-color:rgba(168,85,247,0.3)'
+                        : 'rgba(59,130,246,0.2); color:#60a5fa; border-color:rgba(59,130,246,0.3)';
+                    const typeIcon = data.searchType === 'b2p' ? '👤' : '🏢';
+                    const typeBadge = `<span style="font-size:0.8rem; background:${typeColor}; border-radius:6px; padding:2px 10px; margin-right:8px;">${typeIcon} ${data.typeLabel || ''}</span>`;
+                    tagsList.innerHTML = typeBadge + data.data.map(t => `<span class="badge" style="margin-right: 5px; background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-color: rgba(59, 130, 246, 0.3);">${t}</span>`).join('');
                 }
                 else if (data.type === 'lead') {
                     addLeadToTable(data.data);
