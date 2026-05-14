@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         statusText.textContent = `Yapay zeka "${sector}" için hedefleri belirliyor...`;
         searchBtn.disabled = true;
 
-        eventSource = new EventSource(`/api/search?sector=${encodeURIComponent(sector)}`);
+        eventSource = new EventSource(`/api/search?sector=${encodeURIComponent(sector)}&location=${encodeURIComponent(location)}`);
 
         eventSource.onmessage = (event) => {
             try {
