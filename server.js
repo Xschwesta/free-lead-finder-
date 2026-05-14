@@ -44,24 +44,24 @@ En az 40 farklı hedef kitle veya unvan üret. Sadece aralarına virgül koy, ke
         return tags;
     } catch (error) {
         console.error("AI Tag Generation Error:", error.message);
-        
-        // Yerel Fallback Sözlüğü
-        const desc = companyDesc.toLowerCase();
-        let fallbackTags = [];
 
-        if (desc.includes('dijital pazarlama')) {
-            fallbackTags = ['Otel Sahibi', 'Restoran Yöneticisi', 'E-ticaret Kurucusu', 'Diş Hekimi', 'Klinik Sahibi', 'İnşaat Firması Sahibi', 'Emlak Ofisi Yöneticisi', 'Butik Sahibi', 'Avukat', 'Güzellik Merkezi', 'Oto Galeri', 'Sigorta Acentesi', 'Mimarlık Ofisi', 'Diyetisyen', 'Psikolog', 'Eğitim Kurumu', 'Özel Okul', 'Mobilya Mağazası', 'Tekstil Üreticisi', 'Lojistik Firması'];
-        } else if (desc.includes('spor') || desc.includes('futbol') || desc.includes('kreatif görsel')) {
-            fallbackTags = ['Futbolcu', 'Futbol Menajeri', 'Spor Ajansı Kurucusu', 'Kulüp Başkanı', 'Sportif Direktör', 'Scout Ekibi Lideri', 'Basketbolcu', 'Voleybolcu', 'Spor Salonu Yöneticisi', 'Fitness Eğitmeni', 'Spor Markası', 'Spor Giyim', 'Sporcu Beslenmesi', 'Amatör Kulüp', 'Altyapı Sorumlusu', 'Spor Gazetecisi', 'Spor Yorumcusu', 'Esports Takımı', 'Tenis Kulübü', 'Yüzme Havuzu'];
-        } else if (desc.includes('çekim') || desc.includes('sosyal medya')) {
-            fallbackTags = ['Güzellik Merkezi Sahibi', 'Kafe Sahibi', 'Oto Galeri Sahibi', 'Spor Salonu Yöneticisi', 'İç Mimar', 'Organizasyon Şirketi Kurucusu', 'Gelinlikçi', 'Düğün Salonu', 'Kuyumcu', 'Estetik Cerrah', 'Saç Ekim Merkezi', 'Diş Kliniği', 'Veteriner', 'Pet Shop', 'Anaokulu', 'Kreş', 'Sürücü Kursu', 'Dans Okulu', 'Yoga Stüdyosu', 'Pilates Salonu'];
-        } else if (desc.includes('e-ticaret') || desc.includes('e ticaret')) {
-            fallbackTags = ['Toptancı', 'Üretici Firma Sahibi', 'Tekstil Atölyesi', 'İhracat Müdürü', 'Tedarik Zinciri Yöneticisi', 'Kozmetik Üreticisi', 'Gıda Üreticisi', 'Ambalaj Firması', 'Matbaa', 'Ayakkabı Üreticisi', 'Çanta İmalatı', 'Takı Tasarımcısı', 'Ev Tekstili', 'Züccaciye', 'Elektronik Toptancısı', 'Oto Yedek Parça', 'Kırtasiye', 'Oyuncakçı', 'Kitabevi', 'Hırdavatçı'];
-        } else {
-            fallbackTags = ['Şirket Kurucusu', 'Firma Sahibi', 'Yönetim Kurulu Başkanı', 'Genel Müdür', 'Girişimci', 'Satın Alma Müdürü', 'Pazarlama Müdürü', 'İnsan Kaynakları', 'Operasyon Müdürü', 'İş Geliştirme Yöneticisi', 'Kurumsal İletişim', 'Halkla İlişkiler', 'Finans Müdürü', 'IT Müdürü', 'Proje Yöneticisi', 'Danışman', 'Yatırımcı', 'Melek Yatırımcı', 'CEO', 'CTO'];
+        // OpenAI key yoksa/hatalıysa kullanıcıyı uyar ve geniş generic liste kullan
+        const isKeyMissing = !process.env.OPENAI_API_KEY || error.message.includes('401') || error.message.includes('key');
+        if (isKeyMissing) {
+            console.warn("⚠️  OPENAI_API_KEY eksik veya geçersiz — Generic fallback kullanılıyor.");
         }
 
-        return fallbackTags;
+        // Her sektör için işe yarar 40 generic hedef kitle
+        return [
+            'CEO', 'Kurucu', 'Genel Müdür', 'Yönetim Kurulu Üyesi', 'Ortak',
+            'Girişimci', 'Küçük İşletme Sahibi', 'KOBİ Sahibi', 'Franchise Sahibi', 'Bayi Sahibi',
+            'Pazarlama Müdürü', 'Satış Müdürü', 'İş Geliştirme Müdürü', 'Marka Müdürü', 'Satın Alma Müdürü',
+            'Dijital Pazarlama Ajansı', 'Reklam Ajansı', 'Web Tasarım Şirketi', 'Yazılım Şirketi', 'Teknoloji Girişimi',
+            'Diş Kliniği', 'Özel Klinik', 'Estetik Merkezi', 'Güzellik Salonu', 'Sağlık Merkezi',
+            'Restoran Sahibi', 'Kafe Sahibi', 'Otel Sahibi', 'Catering Firması', 'Gıda Üreticisi',
+            'İnşaat Firması', 'Emlak Ofisi', 'Gayrimenkul Danışmanı', 'Mimarlık Ofisi', 'İç Tasarım Şirketi',
+            'E-ticaret Sahibi', 'Tekstil Firması', 'Kozmetik Mağazası', 'Spor Salonu Sahibi', 'Eğitim Kurumu',
+        ];
     }
 }
 
