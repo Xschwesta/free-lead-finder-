@@ -38,7 +38,7 @@ TAGS: tag1, tag2, tag3, ...`;
             model: "gpt-4o-mini",
             messages: [{ role: "user", content: prompt }],
             temperature: 0.7,
-            max_tokens: 900,
+            max_tokens: 1200,
         });
 
         const text = response.choices[0].message.content.trim();
